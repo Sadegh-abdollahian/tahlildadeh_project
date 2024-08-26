@@ -133,10 +133,13 @@ class Film(models.Model):
                 "slug": self.slug,
             },
         )
+    
+class Serial(models.Model):
+    pass
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Film, on_delete=models.CASCADE, related_name="comments")
+    movie = models.ForeignKey(Film, on_delete=models.CASCADE, related_name="comments")
     name = models.CharField(max_length=80)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)

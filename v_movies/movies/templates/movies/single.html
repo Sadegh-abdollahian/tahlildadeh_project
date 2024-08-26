@@ -8,5 +8,23 @@
   <body>
     <p>{{movie.title}}</p>
     <img src="{{movie.thumbnail.url}}" alt="{{movie.title}}" />
+
+    {% for comment in comments %}
+    <div class="comments" style="padding: 10px">
+      <p class="font-weight-bold">
+        {{ comment.name }}
+        <span class="text-muted font-weight-normal">
+          {{ comment.created_on }}
+        </span>
+      </p>
+      {{ comment.body | linebreaks }}
+    </div>
+    {% endfor %}
+
+    <form method="post" style="margin-top: 1.3em">
+      {{ comment_form.as_p }}
+      <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+      {% csrf_token %}
+    </form>
   </body>
 </html>
