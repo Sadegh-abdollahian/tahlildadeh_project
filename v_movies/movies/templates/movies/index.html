@@ -1,0 +1,18 @@
+<h1>Hello</h1>
+{% for movie in movies %}
+<p>{{movie.title}}</p>
+<p>{{movie.english_name}}</p>
+<video width="400" controls>
+  <source src="{{ movie.trailer.url }}" type="video/mp4" />
+</video>
+<video width="400" controls>
+  <source src="{{ movie.videofile.url }}" type="video/mp4" />
+</video>
+{% for actor in movie.actors.all %}
+<p>{{actor.name}} {{actor.last_name}}</p>
+{% endfor %}
+{% for genre in movie.genres.all %}
+<a href="{{ genre.get_absolute_url }}">{{genre.slug}}</a>
+{% endfor %}
+<img src="{{movie.thumbnail.url}}" alt="{{movie.title}}" />
+{% endfor %}
