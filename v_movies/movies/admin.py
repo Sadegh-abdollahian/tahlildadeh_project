@@ -74,20 +74,20 @@ class SerialEpisodeAdmin(admin.ModelAdmin):
 
 @admin.register(SerialComments)
 class SerialCommentsAdmin(admin.ModelAdmin):
-    list_display = ("name", "body", "movie", "created_on", "active")
-    list_filter = ("active", "created_on")
+    list_display = ("name", "body", "serial", "created_on", "is_active")
+    list_filter = ("is_active", "created_on")
     search_fields = ("name", "email", "body")
     actions = ["approve_comments"]
 
     def approve_comments(self, request, queryset):
-        queryset.update(active=True)
+        queryset.update(is_active=True)
 
 @admin.register(MovieComments)
 class MovieCommentsAdmin(admin.ModelAdmin):
-    list_display = ("name", "body", "movie", "created_on", "active")
-    list_filter = ("active", "created_on")
+    list_display = ("name", "body", "movie", "created_on", "is_active")
+    list_filter = ("is_active", "created_on")
     search_fields = ("name", "email", "body")
     actions = ["approve_comments"]
 
     def approve_comments(self, request, queryset):
-        queryset.update(active=True)
+        queryset.update(is_active=True)
