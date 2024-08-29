@@ -1,8 +1,13 @@
-from .models import Comment
+from .models import SerialComments, MovieComments
 from django import forms
 
 
-class CommentForm(forms.ModelForm):
+class SerialCommentsForm(forms.ModelForm):
     class Meta:
-        model = Comment
+        model = SerialComments
+        fields = ("name", "body")
+
+class MovieCommentsForm(forms.ModelForm):
+    class Meta:
+        model = MovieComments
         fields = ("name", "body")
