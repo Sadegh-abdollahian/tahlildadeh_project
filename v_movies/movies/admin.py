@@ -4,12 +4,18 @@ from .models import Movie, SerialComments, MovieComments, Actor, Genre, Serial, 
 # Register your models here.
 
 admin.site.register(Actor)
+class ActorAdmin(admin.ModelAdmin):
+    list_display = ["name", "last_name", "slug", "position"]
+    prepopulated_fields = {"slug": ("name",)}
 
 admin.site.register(Genre)
+class GenreAdmin(admin.ModelAdmin):
+    list_display = ["title", "slug", "position"]
+    prepopulated_fields = {"slug": ("title",)}
 
 
 @admin.register(Movie)
-class PostAdmin(admin.ModelAdmin):
+class MovieAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "english_title",
@@ -35,7 +41,7 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 @admin.register(Serial)
-class PostAdmin(admin.ModelAdmin):
+class SerialAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "english_title",

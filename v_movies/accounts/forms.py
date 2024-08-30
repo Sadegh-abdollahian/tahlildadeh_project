@@ -239,7 +239,7 @@ class UserRegistrationForm(forms.Form):
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
             raise ValidationError(
-                self.error_messages["password_mismatch"],
+                self.message["password_mismatch"],
                 code="password_mismatch",
             )
         return password2
@@ -249,7 +249,7 @@ class UserRegistrationForm(forms.Form):
         phone_number = self.cleaned_data.get("phone_number")
         if (
             phone_number
-            and self._meta.model.objects.filter(phone_number=phone_number).exists()
+            and User.objects.filter(phone_number=phone_number).exists()
         ):
             self._update_errors(
                 ValidationError(
@@ -266,7 +266,7 @@ class UserRegistrationForm(forms.Form):
     def clean_email(self):
         """Reject email that differ only in case."""
         email = self.cleaned_data.get("email")
-        if email and self._meta.model.objects.filter(email=email).exists():
+        if email and User.objects.filter(email=email).exists():
             self._update_errors(
                 ValidationError(
                     {
@@ -282,3 +282,11 @@ class UserRegistrationForm(forms.Form):
 
 class VerifyCodeForm(forms.Form):
     code = forms.IntegerField()
+
+class LoginForm(forms.Form):
+    phone_number = forms.CharField(max_length=11)
+    password = forms.CharField(
+        label=_("Password"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+    )

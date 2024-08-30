@@ -25,6 +25,9 @@ class Actor(models.Model):
                 "actor_slug": self.slug,
             },
         )
+    
+    def get_full_name(self):
+        return f"{self.name} {self.last_name}"
 
 
 class Genre(models.Model):
@@ -219,8 +222,8 @@ class MovieComments(AbstractComment):
 
     class Meta:
         ordering = ["-created_on"]
-        verbose_name = "نظر"
-        verbose_name_plural = "نظرات"
+        verbose_name = "نظر فیلم سینمایی ها"
+        verbose_name_plural = "نظرات فیلم سینمایی ها"
 
     def __str__(self):
         return f"Comment {self.body} by {self.name}"
@@ -230,8 +233,8 @@ class SerialComments(AbstractComment):
 
     class Meta:
         ordering = ["-created_on"]
-        verbose_name = "نظر"
-        verbose_name_plural = "نظرات"
+        verbose_name = "نظر سریال ها"
+        verbose_name_plural = "نظرات سریال ها"
 
     def __str__(self):
         return f"Comment {self.body} by {self.name}"

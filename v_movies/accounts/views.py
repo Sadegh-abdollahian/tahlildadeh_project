@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, VerifyCodeForm
+from .forms import UserRegistrationForm, VerifyCodeForm, LoginForm
 from django.views import View
+from django.contrib.auth import authenticate, login, logout
 from random import randint
 from extensions.utils import send_opt
 from .models import User, OtpCode
@@ -32,7 +33,7 @@ class UserRegistrationView(View):
                 "last_name": cd["last_name"],
                 "password": cd["password2"],
             }
-            return redirect("accounts:verify")
+            return redirect("accounts:user_verify")
         return render(request, self.template_name, {"form": form})
 
 
@@ -46,7 +47,7 @@ class UserVerifyView(View):
 
     def post(self, request):
         user_session = request.session["user_registration_info"]
-        code_instance = OtpCode.objects.get(phone_number=user_session["phone_number"])
+        code_instance = OtpCode.objects.filter(phone_number=user_session["phone_number"])[0]
         form = self.form_class(request.POST)
         if form.is_valid():
             code = form.cleaned_data["code"]
@@ -54,12 +55,35 @@ class UserVerifyView(View):
                 User.objects.create(
                     phone_number=user_session["phone_number"],
                     email=user_session["email"],
-                    about_me=user_session["about_me"],
                     first_name=user_session["first_name"],
                     last_name=user_session["last_name"],
                     password=user_session["password"],
                 )
                 code_instance.delete()
             del request.session["user_registration_info"]
-            return redirect("blog:post_list")
+            return redirect("/contents")
         return render(request, self.template_name, {"form": form})
+    
+class LoginView(View):
+    form_class = LoginForm
+    template_name = "accounts/login.html"
+
+    def get(self, request):
+        form = self.form_class
+        return render(request, self.template_name, {"form": form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            phone_number = form.cleaned_data["phone_number"]
+            password = form.cleaned_data["password"]
+            user = authenticate(request, phone_number=phone_number, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect("/contents")
+        return render(request, self.template_name, {"form": form})
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect("/contents")
