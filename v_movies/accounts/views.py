@@ -8,7 +8,6 @@ from .models import User, OtpCode
 
 # Create your views here.
 
-
 class UserRegistrationView(View):
     form_class = UserRegistrationForm
     template_name = "accounts/register.html"
@@ -63,7 +62,7 @@ class UserVerifyView(View):
             del request.session["user_registration_info"]
             return redirect("/contents")
         return render(request, self.template_name, {"form": form})
-    
+
 class LoginView(View):
     form_class = LoginForm
     template_name = "accounts/login.html"

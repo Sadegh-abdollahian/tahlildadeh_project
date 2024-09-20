@@ -3,10 +3,8 @@ from django.utils import timezone
 from taggit.managers import TaggableManager
 from django.urls import reverse
 
-
 class Actor(models.Model):
-    name = models.CharField(max_length=60, verbose_name="اسم بازیگر")
-    last_name = models.CharField(max_length=60, verbose_name="فامیلی بازیگر")
+    full_name = models.CharField(max_length=60, verbose_name="اسم کامل بازیگر")
     slug = models.SlugField(max_length=300, unique=True, allow_unicode=True)
     position = models.IntegerField()
 
@@ -16,7 +14,7 @@ class Actor(models.Model):
         verbose_name_plural = "بازیگران"
 
     def __str__(self):
-        return self.name
+        return self.full_name
     
     def get_absolute_url(self):
         return reverse(
@@ -87,7 +85,6 @@ class AbstractFilm(models.Model):
     )
     legal_age = models.PositiveIntegerField(verbose_name="سن قانونی")
     score = models.FloatField(max_length=3, verbose_name="امتیاز از ده")
-    actors = models.ManyToManyField(Actor, verbose_name="بازیگران")
     story = models.CharField(max_length=500, verbose_name="داستان فیلم")
     about_movie = models.CharField(max_length=500, verbose_name="درباره فیلم")
     thumbnail = models.ImageField(
@@ -97,6 +94,7 @@ class AbstractFilm(models.Model):
         upload_to="video", null=True, blank=True, verbose_name="تریلر فیلم"
     )
     is_perimium = models.BooleanField(default=False)
+    actors = models.ManyToManyField(Actor, verbose_name="بازیگران")
     genres = models.ManyToManyField(Genre, verbose_name="ژانر ها")
     likes = models.PositiveIntegerField(default=0)
     dislikes = models.PositiveIntegerField(default=0)
@@ -113,7 +111,7 @@ class AbstractFilm(models.Model):
         return self.title
     
     def get_actors(self):
-        return ", ".join([actor.name for actor in self.actors.all()])
+        return ", ".join([actor.full_name for actor in self.actors.all()])
 
     get_actors.short_description = "بازیگران"
 
@@ -124,6 +122,10 @@ class AbstractFilm(models.Model):
 
     def updateLikes(self):
         self.likes += 1
+        self.save()
+
+    def updateLikes(self):
+        self.dislikes += 1
         self.save()
 
 

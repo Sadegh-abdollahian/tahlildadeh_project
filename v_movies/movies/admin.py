@@ -1,18 +1,19 @@
 from django.contrib import admin
 from .models import Movie, SerialComments, MovieComments, Actor, Genre, Serial, SerialEpisode
 
-# Register your models here.
+class MoviesInline(admin.StackedInline):
+    model = Movie.actors.through
+    extra = 6
 
-admin.site.register(Actor)
+@admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
-    list_display = ["name", "last_name", "slug", "position"]
-    prepopulated_fields = {"slug": ("name",)}
+    list_display = ["full_name", "slug", "position"]
+    prepopulated_fields = {"slug": ("full_name",)}
 
-admin.site.register(Genre)
+@admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = ["title", "slug", "position"]
     prepopulated_fields = {"slug": ("title",)}
-
 
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
@@ -39,6 +40,7 @@ class MovieAdmin(admin.ModelAdmin):
     )
     search_fields = ("title",)
     prepopulated_fields = {"slug": ("title",)}
+    inlines= [MoviesInline,]
 
 @admin.register(Serial)
 class SerialAdmin(admin.ModelAdmin):
@@ -50,7 +52,6 @@ class SerialAdmin(admin.ModelAdmin):
         "country",
         "legal_age",
         "score",
-        "get_actors",
         "get_genres",
         "story",
         "about_movie",

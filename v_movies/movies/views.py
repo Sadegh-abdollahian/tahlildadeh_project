@@ -4,27 +4,41 @@ from .forms import MovieCommentsForm, SerialCommentsForm
 from taggit.models import Tag
 from django.db.models import Count
 from django.views import View
+from django.views.generic import ListView
+from .mixins import LoginRequiredMixin
 
+# Views
+class FilmsListView(LoginRequiredMixin ,ListView):
+    model = Movie
+    template_name = "movies/index.html"
+    context_object_name = 'movies'
 
-# Create your views here.
-def films_list(request, actor_slug=None, tag_slug=None, genre_slug=None, **kwargs):
-    movies = Movie.objects.all()
-    if actor_slug:
-        actor = get_object_or_404(Actor, slug=actor_slug)
-        movies = movies.filter(actors=actor)
+    def get_queryset(self):
+        movies = Movie.objects.all()
+        actor_slug = self.kwargs.get('actor_slug')
+        genre_slug = self.kwargs.get('genre_slug') 
+        tag_slug = self.kwargs.get('tag_slug')
 
-    if genre_slug:
-        genre = get_object_or_404(Genre, slug=genre_slug)
-        movies = movies.filter(genres=genre)
+        if actor_slug:
+            actor = get_object_or_404(Actor, slug=actor_slug)
+            movies = movies.filter(actors=actor)
 
-    if tag_slug:
-        tag = get_object_or_404(Tag, slug=tag_slug)
-        movies = movies.filter(tags=tag)
+        if genre_slug:
+            genre = get_object_or_404(Genre, slug=genre_slug)
+            movies = movies.filter(genres=genre)
 
-    return render(request, "movies/index.html", {"movies": movies})
+        if tag_slug:
+            tag = get_object_or_404(Tag, slug=tag_slug)
+            movies = movies.filter(tags=tag)
+
+        return movies
 
 
 def movie_detail(request, slug):
+    # model = Movie
+    # template_name = "movies/index.html"
+    # context_object_name = 'movies'
+
     movie = get_object_or_404(Movie, slug=slug)
 
     comments = movie.comments.filter(active=True)
@@ -58,3 +72,5 @@ def movie_detail(request, slug):
             "similar_movies": similar_movies,
         },
     )
+
+# Movie 

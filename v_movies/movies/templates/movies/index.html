@@ -8,10 +8,12 @@
 <video width="400" controls>
   <source src="{{ movie.videofile.url }}" type="video/mp4" />
 </video>
+<h4>{{movie.download_link_480}}</h4>
+<h4>{{movie.download_link_720}}</h4>
+<h4>{{movie.download_link_1080}}</h4>
 {% for actor in movie.actors.all %}
 <p>{{actor.name}} {{actor.last_name}}</p>
-{% endfor %}
-{% for genre in movie.genres.all %}
+{% endfor %} {% for genre in movie.genres.all %}
 <a href="{{ genre.get_absolute_url }}">{{genre.slug}}</a>
 {% endfor %}
 <img src="{{movie.thumbnail.url}}" alt="{{movie.title}}" />

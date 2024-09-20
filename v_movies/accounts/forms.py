@@ -218,7 +218,6 @@ class UserChangeForm(forms.ModelForm):
 class UserRegistrationForm(forms.Form):
     email = forms.EmailField()
     phone_number = forms.CharField(max_length=11)
-    about_me = forms.CharField(widget=forms.Textarea)
     first_name = forms.CharField(max_length=150)
     last_name = forms.CharField(max_length=150)
     password1 = forms.CharField(
