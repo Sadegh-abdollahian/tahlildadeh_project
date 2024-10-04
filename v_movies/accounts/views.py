@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from random import randint
 from extensions.utils import send_opt
 from .models import User, OtpCode
+from django.http import Http404
 
 # Create your views here.
 
@@ -27,7 +28,6 @@ class UserRegistrationView(View):
             request.session["user_registration_info"] = {
                 "phone_number": phone_number,
                 "email": cd["email"],
-                "about_me": cd["about_me"],
                 "first_name": cd["first_name"],
                 "last_name": cd["last_name"],
                 "password": cd["password2"],
@@ -45,7 +45,10 @@ class UserVerifyView(View):
         return render(request, self.template_name, {"form": form})
 
     def post(self, request):
-        user_session = request.session["user_registration_info"]
+        if request.session["user_registration_info"]:
+            user_session = request.session["user_registration_info"]
+        else:
+            return Http404
         code_instance = OtpCode.objects.filter(phone_number=user_session["phone_number"])[0]
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -59,8 +62,10 @@ class UserVerifyView(View):
                     password=user_session["password"],
                 )
                 code_instance.delete()
-            del request.session["user_registration_info"]
-            return redirect("/contents")
+                del request.session["user_registration_info"]
+                return redirect("/contents")
+            else:
+                return Http404
         return render(request, self.template_name, {"form": form})
 
 class LoginView(View):
@@ -76,7 +81,12 @@ class LoginView(View):
         if form.is_valid():
             phone_number = form.cleaned_data["phone_number"]
             password = form.cleaned_data["password"]
+            user2 = authenticate(request, first_name="sadegh@gmail.com")
             user = authenticate(request, phone_number=phone_number, password=password)
+            print("user :", user)
+            print("number :", phone_number)
+            print("password :", password)
+            print("User 2 :", user2)
             if user is not None:
                 login(request, user)
                 return redirect("/contents")
