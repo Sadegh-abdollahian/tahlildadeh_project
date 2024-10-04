@@ -24,6 +24,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path("contents/", include("movies.urls", namespace="movies")),
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
 if settings.DEBUG:

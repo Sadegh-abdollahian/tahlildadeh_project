@@ -40,8 +40,9 @@ INSTALLED_APPS = [
     # my apps
     "accounts.apps.AccountsConfig",
     "movies.apps.MoviesConfig",
-    "taggit",
     # my libraries
+    "taggit",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
