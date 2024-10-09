@@ -3,6 +3,7 @@ from .serialiazers import RegisterSerializer
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.request import Request
+from django.contrib.auth.hashers import make_password
 
 
 # Create your views here.
@@ -11,6 +12,8 @@ class RegisterView(generics.GenericAPIView):
 
     def post(self, request: Request):
         data = request.data
+
+        data["password"] = make_password(data["password"])
 
         serialiazer = self.serializer_class(data=data)
 
