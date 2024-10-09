@@ -1,3 +1,4 @@
 {
-    "workbench.settings.editor": "ui"
+  "workbench.settings.editor": "ui",
+  "python.linting.pylintArgs": ["--load-plugins", "pylint_django"]
 }

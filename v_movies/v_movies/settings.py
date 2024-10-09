@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # my apps
-    "accounts.apps.AccountsConfig",
     "movies.apps.MoviesConfig",
+    "accounts.apps.AccountsConfig",
     # my libraries
     "taggit",
     "rest_framework",
@@ -56,6 +56,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "v_movies.urls"
+
+REST_FRAMWORK = {"NON_FIELD_ERRORS_KEY": "errors"}
 
 TEMPLATES = [
     {
@@ -132,7 +134,3 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 AUTH_USER_MODEL = "accounts.User"
-
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-)
