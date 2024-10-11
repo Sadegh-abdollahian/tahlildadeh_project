@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.validators import ValidationError
-from .models import User
+from accounts.models import User
 from django.contrib.auth.hashers import make_password
 
 
@@ -17,3 +17,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise ValidationError("Phone number has already been used")
 
         return super().validate(attrs)
+
+
+class VerifySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = "__all__"

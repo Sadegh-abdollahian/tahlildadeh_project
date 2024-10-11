@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # my libraries
     "taggit",
     "rest_framework",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "v_movies.urls"
 
-REST_FRAMWORK = {"NON_FIELD_ERRORS_KEY": "errors"}
+REST_FRAMWORK = {
+    "NON_FIELD_ERRORS_KEY": "errors",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
 
 TEMPLATES = [
     {
