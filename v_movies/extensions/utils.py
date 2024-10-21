@@ -1,7 +1,7 @@
 from django.utils import timezone
 import requests
 
-def send_opt(code, phone_number):
+def send_otp(code, phone_number):
     api_key = "your_api_key"
     sender = "your_sender"
     recipient = "recipient_phone_number"

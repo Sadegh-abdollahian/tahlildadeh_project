@@ -19,7 +19,7 @@ class User(AbstractUser):
         return self.phone_number
 
 
-class OtpCode:
+class OtpCode(models.Model):
     phone_number = models.CharField(max_length=11)
     code = models.CharField(max_length=6)
 

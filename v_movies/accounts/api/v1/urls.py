@@ -1,9 +1,7 @@
-from django.urls import path, re_path
-from .views import UserRegisterView, UserVerifyView
-
-app_name = "accounts"
+from django.urls import path
+from .views import SendOTP, RegisterView
 
 urlpatterns = [
-    path("register/", UserRegisterView.as_view(), name="register"),
-    path("verify/", UserVerifyView.as_view(), name="verify"),
+    path("send_otp/", SendOTP.as_view(), name="send_otp"),
+    path("register/", RegisterView.as_view(), name="register"),
 ]

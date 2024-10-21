@@ -42,7 +42,11 @@ class MovieDetailApiView(generics.ListAPIView):
         return movies
 
     serializer_class = MoviesSerializer
+    permission_classes = []
 
+
+class PremiumMovieDetailApiView(generics.ListAPIView):
+    pass
 
 class GenreDetailApiView(generics.ListCreateAPIView):
     queryset = Genre.objects.all()
