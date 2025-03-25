@@ -3,6 +3,7 @@ from django.utils import timezone
 from taggit.managers import TaggableManager
 from django.urls import reverse
 
+
 class Actor(models.Model):
     full_name = models.CharField(max_length=60, verbose_name="اسم کامل بازیگر")
     slug = models.SlugField(max_length=300, unique=True, allow_unicode=True)
@@ -15,7 +16,7 @@ class Actor(models.Model):
 
     def __str__(self):
         return self.full_name
-    
+
     def get_absolute_url(self):
         return reverse(
             "movies:actor_list",
@@ -23,7 +24,7 @@ class Actor(models.Model):
                 "actor_slug": self.slug,
             },
         )
-    
+
     def get_full_name(self):
         return f"{self.name} {self.last_name}"
 
@@ -48,7 +49,8 @@ class Genre(models.Model):
                 "genre_slug": self.slug,
             },
         )
-    
+
+
 class AbstractFilm(models.Model):
     MADE_IN_CHOICES = (
         ("ایالات متحده آمریکا", "ایالات متحده آمریکا"),
@@ -75,7 +77,7 @@ class AbstractFilm(models.Model):
         ("هلند", "هلند"),
     )
 
-    # Title is persian_title 
+    # Title is persian_title
     title = models.CharField(max_length=350, verbose_name="نام فارسی")
     english_title = models.CharField(max_length=350, verbose_name="نام انگلیسی")
     year_of_manufacture = models.IntegerField(verbose_name="سال ساخت")
@@ -93,7 +95,7 @@ class AbstractFilm(models.Model):
     trailer = models.FileField(
         upload_to="video", null=True, blank=True, verbose_name="تریلر فیلم"
     )
-    is_perimium = models.BooleanField(default=False)
+    is_perimium = models.BooleanField(default=False, verbose_name="اشتراکی")
     actors = models.ManyToManyField(Actor, verbose_name="بازیگران")
     genres = models.ManyToManyField(Genre, verbose_name="ژانر ها")
     likes = models.PositiveIntegerField(default=0)
@@ -109,7 +111,7 @@ class AbstractFilm(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def get_actors(self):
         return ", ".join([actor.full_name for actor in self.actors.all()])
 
@@ -124,7 +126,7 @@ class AbstractFilm(models.Model):
         self.likes += 1
         self.save()
 
-    def updateLikes(self):
+    def updateDislikes(self):
         self.dislikes += 1
         self.save()
 
@@ -136,9 +138,15 @@ class Movie(AbstractFilm):
     videofile = models.FileField(
         upload_to="video", null=True, blank=True, verbose_name="ویدیو ی فیلم"
     )
-    download_link_480 = models.CharField(max_length=80, null=True, verbose_name="لینک دانلود با کیفیت 480")
-    download_link_720 = models.CharField(max_length=80, null=True, verbose_name="لینک دانلود با کیفیت 720")
-    download_link_1080 = models.CharField(max_length=80, null=True, verbose_name="لینک دانلود با کیفیت 1080")
+    download_link_480 = models.CharField(
+        max_length=80, null=True, verbose_name="لینک دانلود با کیفیت 480"
+    )
+    download_link_720 = models.CharField(
+        max_length=80, null=True, verbose_name="لینک دانلود با کیفیت 720"
+    )
+    download_link_1080 = models.CharField(
+        max_length=80, null=True, verbose_name="لینک دانلود با کیفیت 1080"
+    )
 
     publish = models.DateTimeField(default=timezone.now, verbose_name="زمان انتشار")
     created_on = models.DateTimeField(auto_now_add=True, verbose_name="زمان ایجاد")
@@ -161,44 +169,26 @@ class Movie(AbstractFilm):
         )
 
 
-class Serial(AbstractFilm):
-    episodes_number = models.PositiveIntegerField(default=0)
-    seasons = models.PositiveIntegerField(default=1, verbose_name="فصل ها")
-    is_perimium = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ["-created_on"]
-        verbose_name = "سریال"
-        verbose_name_plural = "سریال ها"
-
-    def __str__(self):
-        return self.title
-    
-    def get_absolute_url(self):
-        return reverse(
-            "movies:serial_detail",
-            kwargs={
-                "slug": self.slug,
-            },
-        )
-
-
-class SerialEpisode(models.Model):
+class SerieEpisode(models.Model):
     title = models.CharField(max_length=50, verbose_name="عنوان قسمت")
     number_of_episode = models.IntegerField(verbose_name="قسمت چندم")
     videofile = models.FileField(
         upload_to="video", null=True, blank=True, verbose_name="ویدیو ی این قسمت"
     )
-    download_link_480 = models.CharField(max_length=80, verbose_name="لینک دانلود با کیفیت 480")
-    download_link_720 = models.CharField(max_length=80, verbose_name="لینک دانلود با کیفیت 720")
-    download_link_1080 = models.CharField(max_length=80, verbose_name="لینک دانلود با کیفیت 1080")
+    download_link_480 = models.CharField(
+        max_length=80, verbose_name="لینک دانلود با کیفیت 480"
+    )
+    download_link_720 = models.CharField(
+        max_length=80, verbose_name="لینک دانلود با کیفیت 720"
+    )
+    download_link_1080 = models.CharField(
+        max_length=80, verbose_name="لینک دانلود با کیفیت 1080"
+    )
     season = models.PositiveIntegerField(verbose_name="فصل")
 
     publish = models.DateTimeField(default=timezone.now, verbose_name="زمان انتشار")
     created_on = models.DateTimeField(auto_now_add=True, verbose_name="زمان ایجاد")
     updated = models.DateTimeField(auto_now=True)
-
-    serial = models.ForeignKey(Serial, on_delete=models.PROTECT, related_name="episodes")
 
     class Meta:
         ordering = ["number_of_episode"]
@@ -207,7 +197,29 @@ class SerialEpisode(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
+class Serie(AbstractFilm):
+    episodes_number = models.PositiveIntegerField(default=0, verbose_name="چند قسمت")
+    seasons = models.PositiveIntegerField(default=1, verbose_name="فصل ها")
+    serie = models.ManyToManyField(SerieEpisode, related_name="episodes")
+
+    class Meta:
+        ordering = ["-created_on"]
+        verbose_name = "سریال"
+        verbose_name_plural = "سریال ها"
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse(
+            "movies:serie_detail",
+            kwargs={
+                "slug": self.slug,
+            },
+        )
+
 
 class AbstractComment(models.Model):
     name = models.CharField(max_length=80)
@@ -230,8 +242,9 @@ class MovieComments(AbstractComment):
     def __str__(self):
         return f"Comment {self.body} by {self.name}"
 
-class SerialComments(AbstractComment):
-    serial = models.ForeignKey(Serial, on_delete=models.CASCADE, related_name="comments")
+
+class SerieComments(AbstractComment):
+    serie = models.ForeignKey(Serie, on_delete=models.CASCADE, related_name="comments")
 
     class Meta:
         ordering = ["-created_on"]

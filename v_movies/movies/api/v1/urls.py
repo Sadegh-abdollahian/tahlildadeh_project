@@ -1,27 +1,13 @@
-from django.urls import path, re_path
-from .views import (
-    MoviesListApiView,
-    MoviesListApiView,
-    GenreDetailApiView,
-    ActorDetailApiView,
-    MovieDetailApiView
-)
+from django.urls import path, include
+from .views import MovieViewset, GenreViewSet, ActorViewSet, SerieViewset
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r"movies", MovieViewset)
+router.register(r"genres", GenreViewSet)
+router.register(r"actors", ActorViewSet)
+router.register(r"series", SerieViewset)
 
 urlpatterns = [
-    path("", MoviesListApiView.as_view(), name="movies"),
-    path("genre/", GenreDetailApiView.as_view(), name="genres"),
-    path("actor/", ActorDetailApiView.as_view(), name="actors"),
-    re_path(
-        r"^genre/(?P<genre_slug>[-\w]+)/",
-        MoviesListApiView.as_view(),
-        name="genre_list",
-    ),
-    re_path(
-        r"^actor/(?P<actor_slug>[-\w]+)/",
-        MoviesListApiView.as_view(),
-        name="genre_list",
-    ),
-    re_path(
-        r"^movie/(?P<slug>[-\w]+)/$", MovieDetailApiView.as_view(), name="movie_detail"
-    ),
+    path("", include(router.urls)),
 ]

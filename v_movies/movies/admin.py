@@ -1,19 +1,36 @@
 from django.contrib import admin
-from .models import Movie, SerialComments, MovieComments, Actor, Genre, Serial, SerialEpisode
+from .models import (
+    Movie,
+    SerieComments,
+    MovieComments,
+    Actor,
+    Genre,
+    Serie,
+    SerieEpisode,
+)
 
-class MoviesInline(admin.StackedInline):
+
+class MoviesActoresInline(admin.StackedInline):
     model = Movie.actors.through
-    extra = 6
+    extra = 3
+
+
+class MoviesGenresInline(admin.StackedInline):
+    model = Movie.genres.through
+    extra = 3
+
 
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
     list_display = ["full_name", "slug", "position"]
     prepopulated_fields = {"slug": ("full_name",)}
 
+
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = ["title", "slug", "position"]
     prepopulated_fields = {"slug": ("title",)}
+
 
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
@@ -28,42 +45,37 @@ class MovieAdmin(admin.ModelAdmin):
         "score",
         "get_actors",
         "get_genres",
-        "story",
-        "about_movie",
         "thumbnail",
         "trailer",
         "videofile",
         "is_perimium",
-        "download_link_480",
-        "download_link_720",
-        "download_link_1080",
     )
     search_fields = ("title",)
     prepopulated_fields = {"slug": ("title",)}
-    inlines= [MoviesInline,]
+    inlines = [MoviesActoresInline, MoviesGenresInline]
 
-@admin.register(Serial)
-class SerialAdmin(admin.ModelAdmin):
+
+@admin.register(Serie)
+class SerieAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "english_title",
         "year_of_manufacture",
         "slug",
+        "is_perimium",
         "country",
         "legal_age",
         "score",
         "get_genres",
-        "story",
-        "about_movie",
         "thumbnail",
         "trailer",
-        "is_perimium",
     )
     search_fields = ("title",)
     prepopulated_fields = {"slug": ("title",)}
 
-@admin.register(SerialEpisode)
-class SerialEpisodeAdmin(admin.ModelAdmin):
+
+@admin.register(SerieEpisode)
+class SerieEpisodeAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "number_of_episode",
@@ -75,19 +87,19 @@ class SerialEpisodeAdmin(admin.ModelAdmin):
         "publish",
         "created_on",
         "updated",
-        "serial",
     )
 
 
-@admin.register(SerialComments)
-class SerialCommentsAdmin(admin.ModelAdmin):
-    list_display = ("name", "body", "serial", "created_on", "is_active")
+@admin.register(SerieComments)
+class SerieCommentsAdmin(admin.ModelAdmin):
+    list_display = ("name", "body", "serie", "created_on", "is_active")
     list_filter = ("is_active", "created_on")
     search_fields = ("name", "email", "body")
     actions = ["approve_comments"]
 
     def approve_comments(self, request, queryset):
         queryset.update(is_active=True)
+
 
 @admin.register(MovieComments)
 class MovieCommentsAdmin(admin.ModelAdmin):

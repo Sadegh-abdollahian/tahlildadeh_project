@@ -1,0 +1,127 @@
+anyio==4.8.0
+argcomplete==3.1.4
+asgiref==3.8.1
+astroid==3.3.4
+attrs==23.2.0
+Babel==2.10.3
+bcrypt==3.2.2
+black==24.8.0
+blinker==1.7.0
+certifi==2024.7.4
+chardet==5.2.0
+charset-normalizer==3.3.2
+click==8.1.7
+# cloud-init==24.4.1
+colorama==0.4.6
+# command-not-found==0.3
+configobj==5.0.8
+coreapi==2.3.3
+coreschema==0.0.4
+cryptography==41.0.7
+# cupshelpers==1.0
+dbus-python==1.3.2
+# defer==1.0.4
+dill==0.3.9
+distro==1.9.0
+# distro-info==1.7+build1
+Django==5.1
+django-cors-headers==4.7.0
+django-rest-swagger==2.2.0
+django-taggit==6.0.0
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
+drf-spectacular==0.28.0
+drf-yasg==1.21.8
+duplicity==2.1.4
+factory_boy==3.3.3
+Faker==35.2.0
+fasteners==0.18
+gunicorn==23.0.0
+# gyp==0.1
+h11==0.14.0
+httpcore==1.0.7
+httplib2==0.20.4
+httpx==0.28.1
+idna==3.8
+inflection==0.5.1
+iniconfig==2.0.0
+isort==5.13.2
+itypes==1.2.0
+Jinja2==3.1.2
+jsonpatch==1.32
+jsonpointer==2.0
+jsonschema==4.10.3
+# language-selector==0.1
+# launchpadlib==1.11.0
+# lazr.restfulclient==0.14.6
+# lazr.uri==1.0.6
+# louis==3.29.0
+Mako==1.3.2
+Markdown==3.7
+markdown-it-py==3.0.0
+MarkupSafe==2.1.5
+mccabe==0.7.0
+mdurl==0.1.2
+monotonic==1.6
+mypy-extensions==1.0.0
+netaddr==0.8.0
+netifaces==0.11.0
+oauthlib==3.2.2
+olefile==0.46
+openapi-codec==1.3.2
+packaging==24.1
+paramiko==2.12.0
+pathspec==0.12.1
+pexpect==4.9.0
+pillow==10.4.0
+pipx==1.4.3
+platformdirs==4.3.6
+pluggy==1.5.0
+psutil==5.9.8
+psycopg2-binary==2.9.10
+ptyprocess==0.7.0
+pycairo==1.25.1
+pycups==2.0.1
+Pygments==2.17.2
+PyGObject==3.48.2
+PyJWT==2.9.0
+pylint==3.3.1
+pylint-django==2.5.5
+pylint-plugin-utils==0.8.2
+PyNaCl==1.5.0
+pyparsing==3.1.1
+pyrsistent==0.20.0
+pyserial==3.5
+pytest==8.3.4
+pytest-django==4.9.0
+pytest-factoryboy==2.7.0
+# python-apt==2.7.7+ubuntu4
+python-dateutil==2.8.2
+# python-debian==0.1.49+ubuntu2
+python-telegram-bot==21.10
+pytz==2024.1
+pyxdg==0.28
+PyYAML==6.0.1
+requests==2.32.3
+rich==13.7.1
+setuptools==68.1.2
+simplejson==3.19.3
+six==1.16.0
+sniffio==1.3.1
+sqlparse==0.5.1
+# systemd-python==235
+tomlkit==0.13.2
+typing_extensions==4.10.0
+tzdata==2024.1
+# ubuntu-drivers-common==0.0.0
+# ubuntu-pro-client==8001
+# ufw==0.36.2
+# unattended-upgrades==0.1
+uritemplate==4.1.1
+urllib3==2.2.2
+# usb-creator==0.3.16
+userpath==1.9.1
+wadllib==1.3.6
+wheel==0.42.0
+xdg==5
+# xkit==0.0.0
